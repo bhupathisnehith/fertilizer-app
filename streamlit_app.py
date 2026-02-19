@@ -14,7 +14,7 @@ st.set_page_config(
 )
 
 st.title("🌱 Smart Fertilizer Recommendation System")
-st.markdown("AI-based fertilizer recommendation with soil health analysis")
+st.markdown("AI-based fertilizer recommendation with soil health analysis and cost estimation")
 
 # ---------------- LOAD DATA ----------------
 @st.cache_data
@@ -40,7 +40,7 @@ preprocessor = ColumnTransformer([
 
 model = Pipeline([
     ("prep", preprocessor),
-    ("clf", RandomForestClassifier(n_estimators=200, random_state=42))
+    ("clf", RandomForestClassifier(n_estimators=250, random_state=42))
 ])
 
 model.fit(X, y)
@@ -93,18 +93,35 @@ if st.button("Recommend Fertilizer"):
     if nitrogen >= 40 and phosphorus >= 30 and potassium >= 30:
         st.success("Soil Nutrient Levels are Balanced ✅")
 
-    # ---------------- QUANTITY RECOMMENDATION ----------------
-    st.subheader("📦 Estimated Quantity Recommendation")
+    # ---------------- QUANTITY RECOMMENDATION (PER ACRE) ----------------
+    st.subheader("📦 Estimated Quantity Recommendation (Per Acre)")
 
     avg_deficiency = max(0, 100 - nitrogen) + max(0, 60 - phosphorus) + max(0, 60 - potassium)
-    quantity = round(avg_deficiency / 3, 2)
+    quantity_hectare = avg_deficiency / 3
 
-    st.info(f"Recommended Quantity: {quantity} kg per hectare")
+    quantity_acre = round(quantity_hectare / 2.471, 2)
 
-    # ---------------- GRAPH ----------------
-    st.subheader("📈 NPK Visualization")
+    st.info(f"Recommended Quantity: {quantity_acre} kg per acre")
+
+    # ---------------- COST ESTIMATION ----------------
+    st.subheader("💰 Estimated Cost Per Acre")
+
+    price_per_kg = 25  # You can change this value
+    cost = round(quantity_acre * price_per_kg, 2)
+
+    st.info(f"Estimated Cost: ₹{cost}")
+
+    # ---------------- GRAPH VISUALIZATION ----------------
+    st.subheader("📈 NPK Comparison (Current vs Target)")
+
+    nutrients = ["Nitrogen", "Phosphorus", "Potassium"]
+    values = [nitrogen, phosphorus, potassium]
+    targets = [100, 60, 60]
 
     fig, ax = plt.subplots()
-    ax.bar(["Nitrogen", "Phosphorus", "Potassium"], [nitrogen, phosphorus, potassium])
+    ax.bar(nutrients, values)
+    ax.plot(nutrients, targets)
     ax.set_ylabel("Nutrient Value")
+    ax.set_title("NPK vs Ideal Target")
+
     st.pyplot(fig)
