@@ -125,17 +125,4 @@ if st.button("Recommend Fertilizer"):
 
     st.info(f"Estimated Cost: ₹{cost}")
 
-    # ---------------- GRAPH ----------------
-    st.subheader("📈 NPK Comparison (Current vs Target)")
-
-    nutrients = ["Nitrogen", "Phosphorus", "Potassium"]
-    values = [nitrogen, phosphorus, potassium]
-    targets = [100, 60, 60]
-
-    fig, ax = plt.subplots()
-    ax.bar(nutrients, values)
-    ax.plot(nutrients, targets)
-    ax.set_ylabel("Nutrient Value")
-    ax.set_title("NPK vs Ideal Target")
-
-    st.pyplot(fig)
+    
