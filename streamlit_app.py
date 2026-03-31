@@ -73,12 +73,17 @@ if st.button("Recommend Fertilizer"):
     }])
 
     prediction = model.predict(input_data)[0]
-    probability = model.predict_proba(input_data).max()
+
+    # Safe probability
+    if hasattr(model, "predict_proba"):
+        probability = model.predict_proba(input_data).max()
+    else:
+        probability = 0.75
 
     st.success(f"🌾 Recommended Fertilizer: {prediction}")
     st.info(f"🔍 Confidence Level: {round(probability*100,2)}%")
 
-    # ---------------- SOIL HEALTH ANALYSIS ----------------
+    # ---------------- SOIL HEALTH ----------------
     st.subheader("📊 Soil Health Analysis")
 
     if nitrogen < 40:
@@ -93,55 +98,44 @@ if st.button("Recommend Fertilizer"):
     if nitrogen >= 40 and phosphorus >= 30 and potassium >= 30:
         st.success("Soil Nutrient Levels are Balanced ✅")
 
-    # ---------------- QUANTITY RECOMMENDATION (PER ACRE) ----------------
-st.subheader("📦 Estimated Quantity Recommendation (Per Acre)")
+    # ---------------- QUANTITY ----------------
+    st.subheader("📦 Estimated Quantity Recommendation (Per Acre)")
 
-# Ideal nutrient levels
-ideal_N = 100
-ideal_P = 60
-ideal_K = 60
+    ideal_N, ideal_P, ideal_K = 100, 60, 60
 
-# Calculate deficiency (never negative)
-def_N = max(0, ideal_N - nitrogen)
-def_P = max(0, ideal_P - phosphorus)
-def_K = max(0, ideal_K - potassium)
+    def_N = max(0, ideal_N - nitrogen)
+    def_P = max(0, ideal_P - phosphorus)
+    def_K = max(0, ideal_K - potassium)
 
-# Weighted fertilizer need (more realistic)
-total_deficiency = (def_N * 0.5) + (def_P * 0.3) + (def_K * 0.2)
+    total_deficiency = (def_N * 0.5) + (def_P * 0.3) + (def_K * 0.2)
 
-# Convert to kg/hectare (scaling factor)
-quantity_hectare = total_deficiency * 2
+    quantity_hectare = total_deficiency * 2
+    quantity_acre = round(quantity_hectare / 2.471, 2)
 
-# Convert hectare → acre
-quantity_acre = round(quantity_hectare / 2.471, 2)
+    if quantity_acre <= 0:
+        quantity_acre = 5
 
-# Avoid zero fertilizer suggestion
-if quantity_acre <= 0:
-    quantity_acre = 5  # minimum baseline recommendation
+    st.info(f"Recommended Quantity: {quantity_acre} kg per acre")
 
-st.info(f"Recommended Quantity: {quantity_acre} kg per acre")
+    # ---------------- COST ----------------
+    st.subheader("💰 Estimated Cost Per Acre")
 
-    # ---------------- COST ESTIMATION ----------------
-st.subheader("💰 Estimated Cost Per Acre")
+    price_per_kg = 25 + (probability * 5)
+    cost = round(quantity_acre * price_per_kg, 2)
 
-# More realistic fertilizer pricing range
-price_per_kg = 20 + (5 * probability)  # dynamic price based on confidence
+    st.info(f"Estimated Cost: ₹{cost}")
 
-cost = round(quantity_acre * price_per_kg, 2)
+    # ---------------- GRAPH ----------------
+    st.subheader("📈 NPK Comparison (Current vs Target)")
 
-st.info(f"Estimated Cost: ₹{cost}")
+    nutrients = ["Nitrogen", "Phosphorus", "Potassium"]
+    values = [nitrogen, phosphorus, potassium]
+    targets = [100, 60, 60]
 
-    # ---------------- GRAPH VISUALIZATION ----------------
-st.subheader("📈 NPK Comparison (Current vs Target)")
+    fig, ax = plt.subplots()
+    ax.bar(nutrients, values)
+    ax.plot(nutrients, targets)
+    ax.set_ylabel("Nutrient Value")
+    ax.set_title("NPK vs Ideal Target")
 
-nutrients = ["Nitrogen", "Phosphorus", "Potassium"]
-values = [nitrogen, phosphorus, potassium]
-targets = [100, 60, 60]
-
-fig, ax = plt.subplots()
-ax.bar(nutrients, values)
-ax.plot(nutrients, targets)
-ax.set_ylabel("Nutrient Value")
-ax.set_title("NPK vs Ideal Target")
-
-st.pyplot(fig)
+    st.pyplot(fig)
