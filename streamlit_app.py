@@ -94,22 +94,42 @@ if st.button("Recommend Fertilizer"):
         st.success("Soil Nutrient Levels are Balanced ✅")
 
     # ---------------- QUANTITY RECOMMENDATION (PER ACRE) ----------------
-    st.subheader("📦 Estimated Quantity Recommendation (Per Acre)")
+st.subheader("📦 Estimated Quantity Recommendation (Per Acre)")
 
-    avg_deficiency = max(0, 100 - nitrogen) + max(0, 60 - phosphorus) + max(0, 60 - potassium)
-    quantity_hectare = avg_deficiency / 3
+# Ideal nutrient levels
+ideal_N = 100
+ideal_P = 60
+ideal_K = 60
 
-    quantity_acre = round(quantity_hectare / 2.471, 2)
+# Calculate deficiency (never negative)
+def_N = max(0, ideal_N - nitrogen)
+def_P = max(0, ideal_P - phosphorus)
+def_K = max(0, ideal_K - potassium)
 
-    st.info(f"Recommended Quantity: {quantity_acre} kg per acre")
+# Weighted fertilizer need (more realistic)
+total_deficiency = (def_N * 0.5) + (def_P * 0.3) + (def_K * 0.2)
+
+# Convert to kg/hectare (scaling factor)
+quantity_hectare = total_deficiency * 2
+
+# Convert hectare → acre
+quantity_acre = round(quantity_hectare / 2.471, 2)
+
+# Avoid zero fertilizer suggestion
+if quantity_acre <= 0:
+    quantity_acre = 5  # minimum baseline recommendation
+
+st.info(f"Recommended Quantity: {quantity_acre} kg per acre")
 
     # ---------------- COST ESTIMATION ----------------
-    st.subheader("💰 Estimated Cost Per Acre")
+st.subheader("💰 Estimated Cost Per Acre")
 
-    price_per_kg = 25  # You can change this value
-    cost = round(quantity_acre * price_per_kg, 2)
+# More realistic fertilizer pricing range
+price_per_kg = 20 + (5 * probability)  # dynamic price based on confidence
 
-    st.info(f"Estimated Cost: ₹{cost}")
+cost = round(quantity_acre * price_per_kg, 2)
+
+st.info(f"Estimated Cost: ₹{cost}")
 
     # ---------------- GRAPH VISUALIZATION ----------------
     st.subheader("📈 NPK Comparison (Current vs Target)")
