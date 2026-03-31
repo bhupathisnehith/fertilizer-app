@@ -132,16 +132,16 @@ cost = round(quantity_acre * price_per_kg, 2)
 st.info(f"Estimated Cost: ₹{cost}")
 
     # ---------------- GRAPH VISUALIZATION ----------------
-    st.subheader("📈 NPK Comparison (Current vs Target)")
+st.subheader("📈 NPK Comparison (Current vs Target)")
 
-    nutrients = ["Nitrogen", "Phosphorus", "Potassium"]
-    values = [nitrogen, phosphorus, potassium]
-    targets = [100, 60, 60]
+nutrients = ["Nitrogen", "Phosphorus", "Potassium"]
+values = [nitrogen, phosphorus, potassium]
+targets = [100, 60, 60]
 
-    fig, ax = plt.subplots()
-    ax.bar(nutrients, values)
-    ax.plot(nutrients, targets)
-    ax.set_ylabel("Nutrient Value")
-    ax.set_title("NPK vs Ideal Target")
+fig, ax = plt.subplots()
+ax.bar(nutrients, values)
+ax.plot(nutrients, targets)
+ax.set_ylabel("Nutrient Value")
+ax.set_title("NPK vs Ideal Target")
 
-    st.pyplot(fig)
+st.pyplot(fig)
