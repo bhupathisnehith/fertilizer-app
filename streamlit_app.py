@@ -98,22 +98,13 @@ if st.button("Recommend Fertilizer"):
     if nitrogen >= 40 and phosphorus >= 30 and potassium >= 30:
         st.success("Soil Nutrient Levels are Balanced ✅")
 
-    # ---------------- QUANTITY ----------------
+ # ---------------- QUANTITY RECOMMENDATION (PER ACRE) ----------------
     st.subheader("📦 Estimated Quantity Recommendation (Per Acre)")
 
-    ideal_N, ideal_P, ideal_K = 100, 60, 60
+    avg_deficiency = max(0, 100 - nitrogen) + max(0, 60 - phosphorus) + max(0, 60 - potassium)
+    quantity_hectare = avg_deficiency / 3
 
-    def_N = max(0, ideal_N - nitrogen)
-    def_P = max(0, ideal_P - phosphorus)
-    def_K = max(0, ideal_K - potassium)
-
-    total_deficiency = (def_N * 0.5) + (def_P * 0.3) + (def_K * 0.2)
-
-    quantity_hectare = total_deficiency * 2
     quantity_acre = round(quantity_hectare / 2.471, 2)
-
-    if quantity_acre <= 0:
-        quantity_acre = 5
 
     st.info(f"Recommended Quantity: {quantity_acre} kg per acre")
 
