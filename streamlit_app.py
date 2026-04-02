@@ -64,7 +64,7 @@ st.subheader("🌦 Weather Condition")
 
 weather = st.selectbox("Weather", ["Sunny", "Rainy", "Cloudy", "Overcast", "Windy", "Snowy", "Foggy/Mis", "Thunderstorms", "Sandstorms"])
 
-rain_factor = {"Sunny":0.8, "Rainy":1.2, "Cloudy":1.0}[weather]
+rain_factor = {"Sunny":0.8, "Rainy":1.2, "Cloudy":1.0, "Overcast": 1.1, "Windy": 0.9, "Snowy": 0.7, "Foggy/Mis": 0.85, "Thunderstorms": 1.15, "Sandstorms": 0.6}[weather]
 
 # ---------------- PRICES ----------------
 fertilizer_prices = {
@@ -72,7 +72,7 @@ fertilizer_prices = {
 }
 
 crop_prices = {
-    "Rice": 20, "Wheat": 18, "Maize": 15
+    "Rice": 20, "Wheat": 18, "Maize": 15,  "Sugarcane": 3, "Jowar": 22, "Cotton": 60, "Groundnut": 55, "Tur": 70, "Urad": 65, "Moong": 72, "Gram": 50, "Masoor": 55, "Soybean": 40, "Ginger": 120, "Turmeric": 110, "Grapes": 80
 }
 
 # ---------------- RUN MODEL ----------------
