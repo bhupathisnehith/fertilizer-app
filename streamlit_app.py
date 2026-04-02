@@ -97,7 +97,7 @@ crop_prices = {
 }
 
 # ---------------- RUN MODEL ----------------
-if st.button("🚀 Run Prediction"):
+if st.button("🚀 Weather Prediction"):
 
     input_data = pd.DataFrame([{
         "Soil_color": soil,
