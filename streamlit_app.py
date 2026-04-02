@@ -56,9 +56,9 @@ with col1:
     crop = st.selectbox("Crop", df["Crop"].unique())
 
 with col2:
-    nitrogen = st.slider("Nitrogen", 0, 300, 50)
-    phosphorus = st.slider("Phosphorus", 0, 300, 40)
-    potassium = st.slider("Potassium", 0, 300, 40)
+    nitrogen = st.number_input("Nitrogen", 0, 300, 50)
+    phosphorus = st.number_input("Phosphorus", 0, 300, 40)
+    potassium = st.number_input("Potassium", 0, 300, 40)
 
 # ---------------- WEATHER SIMULATION ----------------
 st.subheader("🌦 Weather Condition")
@@ -139,14 +139,4 @@ if st.button("🚀 Run Smart Prediction"):
     st.success(f"Revenue: ₹{round(revenue,2)}")
     st.success(f"Profit: ₹{round(profit,2)}")
 
-    # ---------------- GRAPH ----------------
-    st.subheader("📊 Analysis")
-
-    nutrients = ["N","P","K"]
-    values = [nitrogen, phosphorus, potassium]
-
-    fig, ax = plt.subplots()
-    ax.bar(nutrients, values)
-    ax.set_title("Soil Nutrients")
-
-    st.pyplot(fig)
+   
