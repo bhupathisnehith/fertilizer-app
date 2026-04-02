@@ -5,6 +5,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
+from sklearn.model_selection import train_test_split
 
 # ---------------- PAGE CONFIG ----------------
 st.set_page_config(
@@ -14,7 +15,6 @@ st.set_page_config(
 )
 
 st.title("🌱 Smart Fertilizer Recommendation System")
-st.markdown("AI-based fertilizer recommendation with soil health analysis and cost estimation")
 
 # ---------------- LOAD DATA ----------------
 @st.cache_data
@@ -40,12 +40,22 @@ preprocessor = ColumnTransformer([
 
 model = Pipeline([
     ("prep", preprocessor),
-    ("clf", RandomForestClassifier(n_estimators=250, random_state=42))
+    ("clf", RandomForestClassifier(
+        n_estimators=300,
+        max_depth=10,
+        random_state=42
+    ))
 ])
 
-model.fit(X, y)
+# Train/Test Split
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
 
-st.success("Model Ready ✅")
+model.fit(X_train, y_train)
+accuracy = model.score(X_test, y_test)
+
+st.success(f"Model Ready ✅ (Accuracy: {round(accuracy*100,2)}%)")
 
 # ---------------- INPUT SECTION ----------------
 st.subheader("🧪 Enter Soil Parameters")
@@ -61,6 +71,15 @@ with col2:
     phosphorus = st.number_input("Phosphorus (P)", 0, 300)
     potassium = st.number_input("Potassium (K)", 0, 300)
 
+# Fertilizer price mapping
+fertilizer_prices = {
+    "Urea": 6,
+    "DAP": 25,
+    "MOP": 15,
+    "NPK": 20,
+    "Compost": 5
+}
+
 # ---------------- PREDICTION ----------------
 if st.button("Recommend Fertilizer"):
 
@@ -74,7 +93,7 @@ if st.button("Recommend Fertilizer"):
 
     prediction = model.predict(input_data)[0]
 
-    # ✅ Safe probability handling
+    # Safe probability
     if hasattr(model, "predict_proba"):
         probability = float(model.predict_proba(input_data).max())
     else:
@@ -83,17 +102,37 @@ if st.button("Recommend Fertilizer"):
     st.success(f"🌾 Recommended Fertilizer: {prediction}")
     st.info(f"🔍 Confidence Level: {round(probability*100,2)}%")
 
+    # ---------------- AI EXPLANATION ----------------
+    st.subheader("🤖 AI Recommendation Insight")
+
+    reasons = []
+
+    if nitrogen < 40:
+        reasons.append("Nitrogen is low → improves leaf growth")
+
+    if phosphorus < 30:
+        reasons.append("Phosphorus is low → improves root development")
+
+    if potassium < 30:
+        reasons.append("Potassium is low → increases disease resistance")
+
+    if not reasons:
+        reasons.append("Soil nutrients are balanced → maintenance fertilizer recommended")
+
+    for r in reasons:
+        st.write(f"✔ {r}")
+
     # ---------------- SOIL HEALTH ----------------
     st.subheader("📊 Soil Health Analysis")
 
     if nitrogen < 40:
-        st.warning("Low Nitrogen – may affect leaf growth")
+        st.warning("Low Nitrogen")
 
     if phosphorus < 30:
-        st.warning("Low Phosphorus – root development may be weak")
+        st.warning("Low Phosphorus")
 
     if potassium < 30:
-        st.warning("Low Potassium – disease resistance reduced")
+        st.warning("Low Potassium")
 
     if nitrogen >= 40 and phosphorus >= 30 and potassium >= 30:
         st.success("Soil Nutrient Levels are Balanced ✅")
@@ -110,7 +149,7 @@ if st.button("Recommend Fertilizer"):
     quantity_hectare = avg_deficiency / 3
     quantity_acre = round(quantity_hectare / 2.471, 2)
 
-    # ✅ FIX: Avoid zero output
+    # Ensure minimum fertilizer
     if quantity_acre <= 0:
         quantity_acre = 10
 
@@ -119,22 +158,10 @@ if st.button("Recommend Fertilizer"):
     # ---------------- COST ----------------
     st.subheader("💰 Estimated Cost Per Acre")
 
-    price_per_kg = 25 + (probability * 5)
+    price_per_kg = fertilizer_prices.get(prediction, 20)
     cost = round(quantity_acre * price_per_kg, 2)
 
+    st.info(f"Fertilizer Price: ₹{price_per_kg}/kg")
     st.info(f"Estimated Cost: ₹{cost}")
 
-    # ---------------- GRAPH ----------------
-    st.subheader("📈 NPK Comparison (Current vs Target)")
-
-    nutrients = ["Nitrogen", "Phosphorus", "Potassium"]
-    values = [nitrogen, phosphorus, potassium]
-    targets = [100, 60, 60]
-
-    fig, ax = plt.subplots()
-    ax.bar(nutrients, values)
-    ax.plot(nutrients, targets)
-    ax.set_ylabel("Nutrient Value")
-    ax.set_title("NPK vs Ideal Target")
-
-    st.pyplot(fig)
+   
