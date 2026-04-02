@@ -74,9 +74,9 @@ if st.button("Recommend Fertilizer"):
 
     prediction = model.predict(input_data)[0]
 
-    # Safe probability
+    # ✅ Safe probability handling
     if hasattr(model, "predict_proba"):
-        probability = model.predict_proba(input_data).max()
+        probability = float(model.predict_proba(input_data).max())
     else:
         probability = 0.75
 
@@ -98,13 +98,21 @@ if st.button("Recommend Fertilizer"):
     if nitrogen >= 40 and phosphorus >= 30 and potassium >= 30:
         st.success("Soil Nutrient Levels are Balanced ✅")
 
- # ---------------- QUANTITY RECOMMENDATION (PER ACRE) ----------------
+    # ---------------- QUANTITY ----------------
     st.subheader("📦 Estimated Quantity Recommendation (Per Acre)")
 
-    avg_deficiency = max(0, 100 - nitrogen) + max(0, 60 - phosphorus) + max(0, 60 - potassium)
-    quantity_hectare = avg_deficiency / 3
+    avg_deficiency = (
+        max(0, 100 - nitrogen) +
+        max(0, 60 - phosphorus) +
+        max(0, 60 - potassium)
+    )
 
+    quantity_hectare = avg_deficiency / 3
     quantity_acre = round(quantity_hectare / 2.471, 2)
+
+    # ✅ FIX: Avoid zero output
+    if quantity_acre <= 0:
+        quantity_acre = 10
 
     st.info(f"Recommended Quantity: {quantity_acre} kg per acre")
 
@@ -116,4 +124,17 @@ if st.button("Recommend Fertilizer"):
 
     st.info(f"Estimated Cost: ₹{cost}")
 
-    
+    # ---------------- GRAPH ----------------
+    st.subheader("📈 NPK Comparison (Current vs Target)")
+
+    nutrients = ["Nitrogen", "Phosphorus", "Potassium"]
+    values = [nitrogen, phosphorus, potassium]
+    targets = [100, 60, 60]
+
+    fig, ax = plt.subplots()
+    ax.bar(nutrients, values)
+    ax.plot(nutrients, targets)
+    ax.set_ylabel("Nutrient Value")
+    ax.set_title("NPK vs Ideal Target")
+
+    st.pyplot(fig)
