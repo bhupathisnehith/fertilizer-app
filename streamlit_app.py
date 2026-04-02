@@ -41,7 +41,6 @@ model = Pipeline([
 # Train model (no accuracy display)
 model.fit(X, y)
 
-st.success("Model Ready ✅")
 
 # ---------------- INPUT ----------------
 st.subheader("🧪 Soil Inputs")
