@@ -10,8 +10,7 @@ import numpy as np
 
 # ---------------- PAGE ----------------
 st.set_page_config(page_title="Smart Agri AI System", layout="wide")
-st.title("🌾 Smart Agriculture AI System")
-st.markdown("Fertilizer + Yield + Profit Prediction with AI")
+st.title("🌾 Smart Agriculture System")
 
 # ---------------- LOAD DATA ----------------
 @st.cache_data
@@ -63,7 +62,7 @@ with col2:
 # ---------------- WEATHER SIMULATION ----------------
 st.subheader("🌦 Weather Condition")
 
-weather = st.selectbox("Weather", ["Sunny", "Rainy", "Cloudy"])
+weather = st.selectbox("Weather", ["Sunny", "Rainy", "Cloudy", "Overcast", "Windy", "Snowy", "Foggy/Mis", "Thunderstorms", "Sandstorms"])
 
 rain_factor = {"Sunny":0.8, "Rainy":1.2, "Cloudy":1.0}[weather]
 
@@ -77,7 +76,7 @@ crop_prices = {
 }
 
 # ---------------- RUN MODEL ----------------
-if st.button("🚀 Run Smart Prediction"):
+if st.button("🚀 Weather Prediction"):
 
     input_data = pd.DataFrame([{
         "Soil_color": soil,
