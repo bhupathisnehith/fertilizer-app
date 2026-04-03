@@ -30,7 +30,7 @@ st.markdown("""
     @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap');
     html, body, [class*="css"] { font-family: 'Outfit', sans-serif; }
     .metric-card {
-        background: linear-gradient(135deg, #070ff2 0%, #2d6a4f 100%);
+        background: linear-gradient(135deg, #1a3c2e 0%, #2d6a4f 100%);
         border-radius: 12px; padding: 18px; color: white;
         text-align: center; margin: 6px 0;
         box-shadow: 0 4px 15px rgba(0,0,0,0.15);
@@ -50,7 +50,7 @@ st.markdown("""
         padding:4px 14px; border-radius:20px; font-weight:600; font-size:0.9rem;
     }
     .section-header {
-        font-size: 1.2rem; font-weight: 700; color: #1a3c2e;
+        font-size: 1.2rem; font-weight: 700; color: #070ff2;
         border-bottom: 2px solid #2d6a4f; padding-bottom: 6px; margin: 20px 0 12px 0;
     }
     div[data-testid="stTabs"] button {
