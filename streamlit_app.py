@@ -318,7 +318,6 @@ with tab1:
         confidence  = top3[0][1]
 
         # ── RESULTS ──
-        r1 = st.columns([2, 1])
         
             st.markdown(f"""
             <div style="background:linear-gradient(135deg,#1a3c2e,#2d6a4f);border-radius:14px;
