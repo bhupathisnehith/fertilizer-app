@@ -224,7 +224,7 @@ with tab1:
         with col3:
             st.markdown('<p class="section-header">🌦️ Environment & Crop</p>', unsafe_allow_html=True)
             crop        = st.selectbox("Crop", sorted(df["Crop"].unique()))
-            temperature = st.number_input("Temperature (°C)", 5, 50, 25)
+            temperature = st.number_input("Temperature (°C)", 5, 50)
             weather     = st.selectbox("Current Weather", list(RAIN_FACTOR.keys()))
 
         # Editable prices
@@ -232,7 +232,7 @@ with tab1:
             p_col1, p_col2 = st.columns(2)
             with p_col1:
                 fert_price_override = st.number_input(
-                    "Override Fertilizer Price (₹/kg, 0 = auto)", 0, 200, 0
+                    "Override Fertilizer Price (₹/kg, 0 = auto)", 0, 1000, 0
                 )
             with p_col2:
                 crop_price_override = st.number_input(
@@ -258,6 +258,9 @@ with tab1:
             elif val > high:
                 st.markdown(f'<div class="alert-warn">⚠️ <b>{nutrient}</b> is HIGH ({val})<br><small>Toxicity risk above {high}</small></div>', unsafe_allow_html=True)
                 npk_status[nutrient] = "high"
+            else:
+                st.markdown(f'<div class="alert-ok">✅ <b>{nutrient}</b> is OK ({val})<br><small>Within optimal range</small></div>', unsafe_allow_html=True)
+                npk_status[nutrient] = "ok"
 
     # pH warning
     if pH_val < 5.5:
