@@ -229,7 +229,6 @@ with tab1:
         with col3:
             st.markdown('<p class="section-header">🌦️ Environment & Crop</p>', unsafe_allow_html=True)
             crop        = st.selectbox("Crop", sorted(df["Crop"].unique()))
-            rainfall    = st.number_input("Rainfall (mm)", 0, 3000, 800)
             temperature = st.number_input("Temperature (°C)", 5, 50, 25)
             weather     = st.selectbox("Current Weather", list(RAIN_FACTOR.keys()))
 
