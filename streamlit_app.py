@@ -217,14 +217,14 @@ with tab1:
 
         with col2:
             st.markdown('<p class="section-header">🧪 NPK Levels (kg/ha)</p>', unsafe_allow_html=True)
-            nitrogen   = st.number_input("Nitrogen (N)", 0, 300)
-            phosphorus = st.number_input("Phosphorus (P)", 0, 300)
-            potassium  = st.number_input("Potassium (K)", 0, 300)
+            nitrogen   = st.number_input("Nitrogen (N)", 0, 3000)
+            phosphorus = st.number_input("Phosphorus (P)", 0, 3000)
+            potassium  = st.number_input("Potassium (K)", 0, 3000)
 
         with col3:
             st.markdown('<p class="section-header">🌦️ Environment & Crop</p>', unsafe_allow_html=True)
             crop        = st.selectbox("Crop", sorted(df["Crop"].unique()))
-            temperature = st.number_input("Temperature (°C)", 5, 50)
+            temperature = st.number_input("Temperature (°C)", 0, 500)
             weather     = st.selectbox("Current Weather", list(RAIN_FACTOR.keys()))
 
         # Editable prices
