@@ -319,8 +319,7 @@ with tab1:
 
         # ── RESULTS ──
         r1 = st.columns([2, 1])
-
-        with r1:
+        
             st.markdown(f"""
             <div style="background:linear-gradient(135deg,#1a3c2e,#2d6a4f);border-radius:14px;
                         padding:24px;color:white;margin:10px 0;">
