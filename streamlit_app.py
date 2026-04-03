@@ -217,9 +217,9 @@ with tab1:
 
         with col2:
             st.markdown('<p class="section-header">🧪 NPK Levels (kg/ha)</p>', unsafe_allow_html=True)
-            nitrogen   = st.number_input("Nitrogen (N)", 0, 300, 80)
-            phosphorus = st.number_input("Phosphorus (P)", 0, 300, 50)
-            potassium  = st.number_input("Potassium (K)", 0, 300, 50)
+            nitrogen   = st.number_input("Nitrogen (N)", 0, 300)
+            phosphorus = st.number_input("Phosphorus (P)", 0, 300)
+            potassium  = st.number_input("Potassium (K)", 0, 300)
 
         with col3:
             st.markdown('<p class="section-header">🌦️ Environment & Crop</p>', unsafe_allow_html=True)
@@ -258,9 +258,6 @@ with tab1:
             elif val > high:
                 st.markdown(f'<div class="alert-warn">⚠️ <b>{nutrient}</b> is HIGH ({val})<br><small>Toxicity risk above {high}</small></div>', unsafe_allow_html=True)
                 npk_status[nutrient] = "high"
-            else:
-                st.markdown(f'<div class="alert-ok">✅ <b>{nutrient}</b> is OK ({val})<br><small>Within optimal range</small></div>', unsafe_allow_html=True)
-                npk_status[nutrient] = "ok"
 
     # pH warning
     if pH_val < 5.5:
