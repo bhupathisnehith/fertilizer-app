@@ -172,7 +172,6 @@ if "history" not in st.session_state:
 # ─────────────────────────── SIDEBAR ───────────────────────────────
 
 with st.sidebar:
-    st.image("https://cdn-icons-png.flaticon.com/512/1147/1147809.png", width=70)
     st.title("🌾 Smart Agriculture AI System")
     st.markdown("---")
 
