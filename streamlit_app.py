@@ -191,7 +191,7 @@ with st.sidebar:
         <p>This session</p>
     </div>
     """, unsafe_allow_html=True)
-    
+
 # ─────────────────────────── TABS ──────────────────────────────────
 
 tab1, tab2, tab3 = st.tabs([
@@ -318,34 +318,33 @@ with tab1:
         confidence  = top3[0][1]
 
         # ── RESULTS ──
-        
+        st.markdown(f"""
+        <div style="background:linear-gradient(135deg,#1a3c2e,#2d6a4f);border-radius:14px;
+                    padding:24px;color:white;margin:10px 0;">
+            <div style="font-size:0.9rem;opacity:0.8">🏆 Primary Recommendation</div>
+            <div style="font-size:2.2rem;font-weight:700;margin:6px 0">{prediction}</div>
+            <div style="background:rgba(255,255,255,0.2);border-radius:20px;height:10px;margin:8px 0">
+                <div style="background:#74c69d;width:{confidence}%;height:10px;border-radius:20px"></div>
+            </div>
+            <div style="font-size:0.85rem">Confidence: {confidence}%</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+        st.markdown('<p class="section-header">🏅 Top 3 Alternatives</p>', unsafe_allow_html=True)
+        for rank, (fert, prob) in enumerate(top3):
+            color = "#2d6a4f" if rank == 0 else "#52b788" if rank == 1 else "#95d5b2"
             st.markdown(f"""
-            <div style="background:linear-gradient(135deg,#1a3c2e,#2d6a4f);border-radius:14px;
-                        padding:24px;color:white;margin:10px 0;">
-                <div style="font-size:0.9rem;opacity:0.8">🏆 Primary Recommendation</div>
-                <div style="font-size:2.2rem;font-weight:700;margin:6px 0">{prediction}</div>
-                <div style="background:rgba(255,255,255,0.2);border-radius:20px;height:10px;margin:8px 0">
-                    <div style="background:#74c69d;width:{confidence}%;height:10px;border-radius:20px"></div>
+            <div style="margin:6px 0;display:flex;align-items:center;gap:12px">
+                <span style="background:{color};color:white;width:26px;height:26px;border-radius:50%;
+                             display:inline-flex;align-items:center;justify-content:center;
+                             font-weight:700;font-size:0.8rem;flex-shrink:0">#{rank+1}</span>
+                <span style="flex:1">{fert}</span>
+                <div style="width:160px;background:#eee;border-radius:10px;height:8px">
+                    <div style="background:{color};width:{prob}%;height:8px;border-radius:10px"></div>
                 </div>
-                <div style="font-size:0.85rem">Confidence: {confidence}%</div>
+                <span style="min-width:42px;text-align:right;font-weight:600">{prob}%</span>
             </div>
             """, unsafe_allow_html=True)
-
-            st.markdown('<p class="section-header">🏅 Top 3 Alternatives</p>', unsafe_allow_html=True)
-            for rank, (fert, prob) in enumerate(top3):
-                color = "#2d6a4f" if rank == 0 else "#52b788" if rank == 1 else "#95d5b2"
-                st.markdown(f"""
-                <div style="margin:6px 0;display:flex;align-items:center;gap:12px">
-                    <span style="background:{color};color:white;width:26px;height:26px;border-radius:50%;
-                                 display:inline-flex;align-items:center;justify-content:center;
-                                 font-weight:700;font-size:0.8rem;flex-shrink:0">#{rank+1}</span>
-                    <span style="flex:1">{fert}</span>
-                    <div style="width:160px;background:#eee;border-radius:10px;height:8px">
-                        <div style="background:{color};width:{prob}%;height:8px;border-radius:10px"></div>
-                    </div>
-                    <span style="min-width:42px;text-align:right;font-weight:600">{prob}%</span>
-                </div>
-                """, unsafe_allow_html=True)
 
         # ── QUANTITY & COST ──
         st.markdown('<p class="section-header">📦 Fertilizer Dosage & Cost</p>', unsafe_allow_html=True)
@@ -429,7 +428,7 @@ with tab1:
         st.markdown("---")
         report_lines = [
             "=" * 50,
-            "   SMART AGRICULTURE AI SYSTEM — PREDICTION REPORT",
+            "   SMART AGRI AI — PREDICTION REPORT",
             f"   Generated: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M')}",
             "=" * 50,
             f"District   : {district}",
