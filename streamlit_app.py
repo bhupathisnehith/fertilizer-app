@@ -578,9 +578,8 @@ with tab2:
 # ══════════════════════════════════════════════════════
 # TAB 3 – HISTORY
 # ══════════════════════════════════════════════════════
-with tab4:
-    st.markdown("## 📋 Prediction History")
-
+with tab3:
+    
     if st.session_state.history:
         history_df = pd.DataFrame(st.session_state.history)
         st.dataframe(history_df, use_container_width=True)
