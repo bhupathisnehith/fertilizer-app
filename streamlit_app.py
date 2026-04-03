@@ -540,12 +540,6 @@ with tab2:
         ax4.set_title("Soil Color × Fertilizer")
         st.pyplot(fig4, use_container_width=True)
 
-    st.markdown("**Dataset Sample (filtered)**")
-    filter_crop = st.selectbox("Filter by crop", ["All"] + sorted(df["Crop"].unique().tolist()))
-    display_df  = df if filter_crop == "All" else df[df["Crop"] == filter_crop]
-    st.dataframe(display_df.head(100), use_container_width=True)
-    st.caption(f"Showing up to 100 of {len(display_df):,} records.")
-
 # ══════════════════════════════════════════════════════
 # TAB 3 – HISTORY
 # ══════════════════════════════════════════════════════
