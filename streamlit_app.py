@@ -127,7 +127,7 @@ df = load_data()
 @st.cache_resource
 def build_model(df):
     feature_cols = ["District_Name", "Soil_color", "Nitrogen", "Phosphorus",
-                    "Potassium", "pH", "Rainfall", "Temperature", "Crop"]
+                    "Potassium", "pH", "Temperature", "Crop"]
     X = df[feature_cols]
     y = df["Fertilizer"]
 
@@ -176,7 +176,6 @@ with st.sidebar:
     st.title("🌾 Smart Agriculture AI System")
     st.markdown("---")
 
-
     st.markdown(f"""
     <div class="metric-card">
         <p>Training Records</p>
@@ -192,10 +191,7 @@ with st.sidebar:
         <p>This session</p>
     </div>
     """, unsafe_allow_html=True)
-
-    st.markdown("---")
-    st.caption("Columns used: District, Soil, N, P, K, pH, Rainfall, Temp, Crop")
-
+    
 # ─────────────────────────── TABS ──────────────────────────────────
 
 tab1, tab2, tab3 = st.tabs([
@@ -218,7 +214,7 @@ with tab1:
             st.markdown('<p class="section-header">📍 Location & Soil</p>', unsafe_allow_html=True)
             district   = st.selectbox("District", sorted(df["District_Name"].unique()))
             soil_color = st.selectbox("Soil Color", sorted(df["Soil_color"].unique()))
-            pH_val     = st.number_input("Soil pH", 4.0, 9.0, 6.5, 0.1)
+            pH_val     = st.slider("Soil pH", 4.0, 9.0, 6.5, 0.1)
 
         with col2:
             st.markdown('<p class="section-header">🧪 NPK Levels (kg/ha)</p>', unsafe_allow_html=True)
@@ -233,7 +229,7 @@ with tab1:
             weather     = st.selectbox("Current Weather", list(RAIN_FACTOR.keys()))
 
         # Editable prices
-        with st.expander("💰 Edit Market Prices"):
+        with st.expander("💰 Edit Market Prices (optional)"):
             p_col1, p_col2 = st.columns(2)
             with p_col1:
                 fert_price_override = st.number_input(
@@ -454,7 +450,7 @@ with tab1:
         st.markdown("---")
         report_lines = [
             "=" * 50,
-            "   SMART AGRI AI — PREDICTION REPORT",
+            "   SMART AGRICULTURE AI SYSTEM — PREDICTION REPORT",
             f"   Generated: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M')}",
             "=" * 50,
             f"District   : {district}",
@@ -467,7 +463,6 @@ with tab1:
             f"  P  : {phosphorus} kg/ha",
             f"  K  : {potassium} kg/ha",
             f"  pH : {pH_val}",
-            f"  Rainfall    : {rainfall} mm",
             f"  Temperature : {temperature} °C",
             "",
             "── Prediction ──",
@@ -577,7 +572,8 @@ with tab2:
 # TAB 3 – HISTORY
 # ══════════════════════════════════════════════════════
 with tab3:
-    
+    st.markdown("## 📋 Prediction History")
+
     if st.session_state.history:
         history_df = pd.DataFrame(st.session_state.history)
         st.dataframe(history_df, use_container_width=True)
