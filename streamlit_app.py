@@ -310,7 +310,6 @@ with tab1:
             "Phosphorus":    phosphorus,
             "Potassium":     potassium,
             "pH":            pH_val,
-            "Rainfall":      rainfall,
             "Temperature":   temperature,
             "Crop":          crop,
         }])
