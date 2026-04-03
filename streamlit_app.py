@@ -318,7 +318,7 @@ with tab1:
         confidence  = top3[0][1]
 
         # ── RESULTS ──
-        r1, r2 = st.columns([2, 1])
+        r1 = st.columns([2, 1])
 
         with r1:
             st.markdown(f"""
@@ -348,25 +348,6 @@ with tab1:
                     <span style="min-width:42px;text-align:right;font-weight:600">{prob}%</span>
                 </div>
                 """, unsafe_allow_html=True)
-
-        with r2:
-            # NPK Radar Chart
-            fig, ax = plt.subplots(figsize=(3.5, 3.5), subplot_kw=dict(polar=True))
-            opt = CROP_NPK_OPTIMAL.get(crop, (100, 60, 60))
-            categories = ['Nitrogen', 'Phosphorus', 'Potassium']
-            actual_vals = [nitrogen / opt[0], phosphorus / opt[1], potassium / opt[2]]
-            actual_vals_plot = actual_vals + [actual_vals[0]]
-            angles = np.linspace(0, 2*np.pi, len(categories), endpoint=False).tolist()
-            angles += angles[:1]
-            ax.plot(angles, actual_vals_plot, 'o-', color='#2d6a4f', linewidth=2)
-            ax.fill(angles, actual_vals_plot, alpha=0.3, color='#52b788')
-            ax.plot(angles, [1]*4, '--', color='#ffc107', linewidth=1.2, alpha=0.7, label='Optimal')
-            ax.set_xticks(angles[:-1])
-            ax.set_xticklabels(categories, fontsize=9)
-            ax.set_ylim(0, 2)
-            ax.set_title("NPK vs Optimal\n(ratio)", fontsize=9, pad=14)
-            ax.legend(fontsize=8, loc='upper right', bbox_to_anchor=(1.3, 1.1))
-            st.pyplot(fig, use_container_width=True)
 
         # ── QUANTITY & COST ──
         st.markdown('<p class="section-header">📦 Fertilizer Dosage & Cost</p>', unsafe_allow_html=True)
