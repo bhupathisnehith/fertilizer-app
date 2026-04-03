@@ -176,13 +176,6 @@ with st.sidebar:
     st.title("🌾 Smart Agriculture AI System")
     st.markdown("---")
 
-    st.markdown(f"""
-    <div class="metric-card">
-        <p>Model Accuracy</p>
-        <h2>{model_accuracy*100:.1f}%</h2>
-        <p>Random Forest · 300 trees</p>
-    </div>
-    """, unsafe_allow_html=True)
 
     st.markdown(f"""
     <div class="metric-card">
@@ -208,7 +201,6 @@ with st.sidebar:
 tab1, tab2, tab3, tab4 = st.tabs([
     "🔬 Predict & Analyze",
     "📊 EDA Explorer",
-    "📈 Feature Importance",
     "📋 Prediction History"
 ])
 
@@ -226,7 +218,7 @@ with tab1:
             st.markdown('<p class="section-header">📍 Location & Soil</p>', unsafe_allow_html=True)
             district   = st.selectbox("District", sorted(df["District_Name"].unique()))
             soil_color = st.selectbox("Soil Color", sorted(df["Soil_color"].unique()))
-            pH_val     = st.slider("Soil pH", 4.0, 9.0, 6.5, 0.1)
+            pH_val     = st.number_input("Soil pH", 4.0, 9.0, 6.5, 0.1)
 
         with col2:
             st.markdown('<p class="section-header">🧪 NPK Levels (kg/ha)</p>', unsafe_allow_html=True)
@@ -242,7 +234,7 @@ with tab1:
             weather     = st.selectbox("Current Weather", list(RAIN_FACTOR.keys()))
 
         # Editable prices
-        with st.expander("💰 Edit Market Prices (optional)"):
+        with st.expander("💰 Edit Market Prices"):
             p_col1, p_col2 = st.columns(2)
             with p_col1:
                 fert_price_override = st.number_input(
@@ -309,7 +301,7 @@ with tab1:
 
     # ── PREDICT BUTTON ──
     st.markdown("---")
-    run_btn = st.button("🚀 Run Prediction", type="primary", use_container_width=True)
+    run_btn = st.button("🚀 Predict Fertilizer", type="primary", use_container_width=True)
 
     if run_btn:
         input_df = pd.DataFrame([{
@@ -584,29 +576,7 @@ with tab2:
     st.caption(f"Showing up to 100 of {len(display_df):,} records.")
 
 # ══════════════════════════════════════════════════════
-# TAB 3 – FEATURE IMPORTANCE
-# ══════════════════════════════════════════════════════
-with tab3:
-    st.markdown("## 📈 Feature Importance (Random Forest)")
-    st.markdown("Features that most influence the fertilizer recommendation.")
-
-    top_n = st.slider("Show top N features", 5, 30, 15)
-    top_feats = feat_imp.head(top_n)
-
-    fig_fi, ax_fi = plt.subplots(figsize=(9, top_n * 0.4 + 1))
-    colors = plt.cm.YlGn(np.linspace(0.4, 0.9, len(top_feats)))[::-1]
-    bars = ax_fi.barh(top_feats.index[::-1], top_feats.values[::-1], color=colors)
-    ax_fi.set_xlabel("Importance Score")
-    ax_fi.set_title("Top Feature Importances")
-    for bar, val in zip(bars, top_feats.values[::-1]):
-        ax_fi.text(val + 0.0005, bar.get_y() + bar.get_height()/2,
-                   f"{val:.4f}", va='center', fontsize=8)
-    st.pyplot(fig_fi, use_container_width=True)
-
-    st.info(f"🔍 Model Accuracy on Hold-out Test Set: **{model_accuracy*100:.2f}%** (20% split)")
-
-# ══════════════════════════════════════════════════════
-# TAB 4 – HISTORY
+# TAB 3 – HISTORY
 # ══════════════════════════════════════════════════════
 with tab4:
     st.markdown("## 📋 Prediction History")
