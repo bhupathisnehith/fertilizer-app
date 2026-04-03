@@ -214,7 +214,7 @@ with tab1:
             st.markdown('<p class="section-header">📍 Location & Soil</p>', unsafe_allow_html=True)
             district   = st.selectbox("District", sorted(df["District_Name"].unique()))
             soil_color = st.selectbox("Soil Color", sorted(df["Soil_color"].unique()))
-            pH_val     = st.slider("Soil pH", 4.0, 9.0, 6.5, 0.1)
+            pH_val     = st.number_input("Soil pH", 4.0, 9.0, 6.5, 0.1)
 
         with col2:
             st.markdown('<p class="section-header">🧪 NPK Levels (kg/ha)</p>', unsafe_allow_html=True)
@@ -229,7 +229,7 @@ with tab1:
             weather     = st.selectbox("Current Weather", list(RAIN_FACTOR.keys()))
 
         # Editable prices
-        with st.expander("💰 Edit Market Prices (optional)"):
+        with st.expander("💰 Edit Market Prices"):
             p_col1, p_col2 = st.columns(2)
             with p_col1:
                 fert_price_override = st.number_input(
