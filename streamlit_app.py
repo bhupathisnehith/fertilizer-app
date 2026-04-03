@@ -558,16 +558,6 @@ with tab3:
             mime="text/csv",
         )
 
-        if len(history_df) > 1:
-            st.markdown("**Profit trend across predictions**")
-            fig_h, ax_h = plt.subplots(figsize=(8, 3))
-            ax_h.plot(range(1, len(history_df)+1), history_df["Profit(₹)"],
-                      marker="o", color="#2d6a4f", linewidth=2)
-            ax_h.set_xlabel("Prediction #")
-            ax_h.set_ylabel("Profit (₹)")
-            ax_h.set_title("Profit Across Predictions")
-            ax_h.axhline(0, color="red", linewidth=0.8, linestyle="--")
-            st.pyplot(fig_h, use_container_width=True)
     else:
         st.info("No predictions yet. Run a prediction in the first tab to see history here.")
 
