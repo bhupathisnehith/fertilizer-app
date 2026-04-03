@@ -30,7 +30,7 @@ st.markdown("""
     @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap');
     html, body, [class*="css"] { font-family: 'Outfit', sans-serif; }
     .metric-card {
-        background: linear-gradient(135deg, #1a3c2e 0%, #2d6a4f 100%);
+        background: linear-gradient(135deg, #070ff2 0%, #2d6a4f 100%);
         border-radius: 12px; padding: 18px; color: white;
         text-align: center; margin: 6px 0;
         box-shadow: 0 4px 15px rgba(0,0,0,0.15);
