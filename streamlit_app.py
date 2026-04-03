@@ -50,7 +50,7 @@ st.markdown("""
         padding:4px 14px; border-radius:20px; font-weight:600; font-size:0.9rem;
     }
     .section-header {
-        font-size: 1.2rem; font-weight: 700; color: #070ff2;
+        font-size: 1.2rem; font-weight: 700; color: #f2f6f7;
         border-bottom: 2px solid #2d6a4f; padding-bottom: 6px; margin: 20px 0 12px 0;
     }
     div[data-testid="stTabs"] button {
