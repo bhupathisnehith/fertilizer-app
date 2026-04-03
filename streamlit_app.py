@@ -198,7 +198,7 @@ with st.sidebar:
 
 # ─────────────────────────── TABS ──────────────────────────────────
 
-tab1, tab2, tab3, tab4 = st.tabs([
+tab1, tab2, tab3 = st.tabs([
     "🔬 Predict & Analyze",
     "📊 EDA Explorer",
     "📋 Prediction History"
